@@ -1,0 +1,5 @@
+{
+  "name": "PromptVerse",
+  "description": "A world-class AI prompt gallery featuring a curated collection of high-utility prompts. Users can browse, copy, and test prompts directly using the Gemini API in a stunning 3D environment.",
+  "requestFramePermissions": []
+}

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#002b36" />
+    <title>PromptVerse - AI Prompt Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'glass-bg': 'rgba(255, 255, 255, 0.05)',
+              'glass-border': 'rgba(147, 161, 161, 0.1)',
+              'neon-blue': '#2aa198', 
+              'neon-purple': '#6c71c4',
+              
+              'solar-base03': '#002b36',
+              'solar-base02': '#073642',
+              'solar-base01': '#586e75',
+              'solar-base00': '#657b83',
+              'solar-base0': '#839496',
+              'solar-base1': '#93a1a1',
+              'solar-base2': '#eee8d5',
+              'solar-base3': '#fdf6e3',
+              'solar-yellow': '#b58900',
+              'solar-orange': '#cb4b16',
+              'solar-red': '#dc322f',
+              'solar-magenta': '#d33682',
+              'solar-violet': '#6c71c4',
+              'solar-blue': '#268bd2',
+              'solar-cyan': '#2aa198',
+              'solar-green': '#859900',
+            },
+            animation: {
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        margin: 0;
+        background-color: #002b36; /* Solarized Dark Base03 */
+        color: #93a1a1; /* Solarized Base1 */
+        font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
+      }
+      
+      /* --- GLOBAL SCROLLBAR STYLING --- */
+      /* Apply to all elements */
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: #cb4b16 transparent;
+      }
+
+      /* Webkit Scrollbar (Chrome, Safari, Edge) */
+      ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: transparent;
+        margin: 4px;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: #cb4b16; /* Solar Orange */
+        border-radius: 20px;
+        border: 1px solid transparent;
+        background-clip: content-box; /* Makes it look floating/detached if border used, or just cleaner */
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: #dc322f; /* Solar Red on hover for interaction feedback */
+      }
+      
+      ::-webkit-scrollbar-corner {
+        background: transparent;
+      }
+
+      /* --- REALISTIC 3D UTILITIES (Soft UI / Claymorphism) --- */
+      
+      /* 3D CARD */
+      .card-3d {
+        background-color: #073642;
+        border: none;
+        /* Realistic Drop Shadow: Dark shadow bottom-right, Subtle highlight top-left */
+        box-shadow: 12px 12px 24px rgba(0, 0, 0, 0.3), 
+                    -4px -4px 12px rgba(255, 255, 255, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .card-3d:hover {
+        transform: translateY(-4px);
+        box-shadow: 16px 16px 32px rgba(0, 0, 0, 0.4), 
+                    -6px -6px 16px rgba(255, 255, 255, 0.08);
+        z-index: 10;
+      }
+
+      /* 3D BUTTON (Generic) */
+      .btn-3d {
+        border: none;
+        border-radius: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        transition: all 0.1s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .btn-3d::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+        pointer-events: none;
+      }
+
+      .btn-3d:active:not(:disabled) {
+        transform: scale(0.96);
+      }
+      
+      .btn-3d:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      /* 3D BUTTON VARIANTS */
+      .btn-3d-cyan {
+        background-color: #2aa198;
+        color: #002b36;
+        box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3), 
+                    -2px -2px 8px rgba(255, 255, 255, 0.2);
+      }
+      .btn-3d-cyan:hover {
+        box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.4), 
+                    -2px -2px 10px rgba(255, 255, 255, 0.3);
+      }
+      .btn-3d-cyan:active {
+        box-shadow: inset 4px 4px 8px rgba(0,0,0,0.3);
+      }
+
+      .btn-3d-base02 {
+        background-color: #073642;
+        color: #93a1a1;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3), 
+                    -2px -2px 6px rgba(255, 255, 255, 0.05);
+      }
+      .btn-3d-base02:hover {
+        color: #fdf6e3;
+        box-shadow: 7px 7px 14px rgba(0, 0, 0, 0.35), 
+                    -2px -2px 8px rgba(255, 255, 255, 0.08);
+      }
+      .btn-3d-base02:active {
+         box-shadow: inset 3px 3px 6px rgba(0,0,0,0.3),
+                     inset -1px -1px 3px rgba(255,255,255,0.02);
+      }
+
+      .btn-3d-primary {
+         background: linear-gradient(135deg, #2aa198, #268bd2);
+         color: #002b36;
+         box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3), 
+                    -2px -2px 8px rgba(255, 255, 255, 0.1);
+      }
+      .btn-3d-primary:hover {
+         filter: brightness(1.1);
+      }
+
+      /* 3D ICON BUTTON (Circular) */
+      .btn-icon-3d {
+        border: none;
+        border-radius: 50%;
+        background-color: #073642;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3), 
+                    -2px -2px 6px rgba(255, 255, 255, 0.05);
+        transition: all 0.2s;
+      }
+      .btn-icon-3d:hover {
+        transform: translateY(-2px);
+        box-shadow: 7px 7px 14px rgba(0, 0, 0, 0.4), 
+                    -2px -2px 8px rgba(255, 255, 255, 0.08);
+      }
+      .btn-icon-3d:active {
+        transform: translateY(0) scale(0.95);
+        box-shadow: inset 2px 2px 5px rgba(0,0,0,0.4);
+      }
+
+      /* 3D MODAL */
+      .modal-3d {
+        background-color: #002b36;
+        border: none;
+        /* Very deep shadow for modal pop effect */
+        box-shadow: 30px 30px 60px rgba(0, 0, 0, 0.6), 
+                    -10px -10px 40px rgba(255, 255, 255, 0.05);
+      }
+      
+      /* 3D INPUT */
+      .input-3d {
+        background-color: #00212b; /* Darker than base03 */
+        border: none;
+        /* Deep Inset Shadow for "cutout" look */
+        box-shadow: inset 6px 6px 12px rgba(0,0,0,0.5), 
+                    inset -2px -2px 6px rgba(255,255,255,0.05);
+        color: #fdf6e3;
+        transition: box-shadow 0.2s;
+      }
+      .input-3d:focus {
+        outline: none;
+        /* Glow effect inside */
+        box-shadow: inset 6px 6px 12px rgba(0,0,0,0.6), 
+                    inset -2px -2px 6px rgba(255,255,255,0.05),
+                    0 0 0 1px rgba(42, 161, 152, 0.3);
+      }
+
+      /* 3D TAG */
+      .tag-3d {
+        background-color: #002b36;
+        border: none;
+        box-shadow: 3px 3px 6px rgba(0,0,0,0.3), 
+                    -1px -1px 3px rgba(255,255,255,0.05);
+        font-size: 0.75rem;
+        font-weight: bold;
+        transform: translate(0,0);
+        transition: transform 0.1s;
+      }
+      .tag-3d:hover {
+        transform: translateY(-1px);
+        box-shadow: 4px 4px 8px rgba(0,0,0,0.4), 
+                    -1px -1px 4px rgba(255,255,255,0.08);
+        color: #2aa198;
+      }
+      
+      ::selection {
+        background-color: #2aa198; 
+        color: #002b36; 
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "three": "https://esm.sh/three@^0.182.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0"
+  }
+}
+</script>
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
